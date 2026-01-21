@@ -28,7 +28,7 @@ router.post('/ingest', upload.single('file'), async (req, res) => {
 
     try {
         const doc = await Document.create({ 
-            name: `${Math.floor(Math.random() * 100000)}_${fileName}`, 
+            name: fileName, 
             content: filePath,
             status: 'processing' 
         });
