@@ -4,6 +4,7 @@ const cors = require('cors');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { initDb } = require('./db/tables');
+const Response = require('./helper/Response');
 initDb();
 
 var app = express();
@@ -24,8 +25,7 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // render the error page
-  res.status(err.status || 500);
-  res.send({ error: err.message });
+  new Response(res).setStatus(false).setStatusCode(err.status || 500).setMessage('Error occurred').setError(err.message).send();
 });
 
 module.exports = app;

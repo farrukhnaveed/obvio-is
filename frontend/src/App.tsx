@@ -3,16 +3,17 @@ import FileUpload from './components/FileUpload';
 import SearchBar from './components/SearchBar';
 import ResultsList from './components/ResultsList';
 import './App.css';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function App() {
   const [results, setResults] = useState<string[]>([]);
 
   const handleSearch = async (term: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/search?term=${term}`);
+      const response = await fetch(`${apiUrl}/api/search?term=${term}`);
       const data = await response.json();
       // Expecting { results: ["doc1.txt", "doc2.txt", ...] }
-      setResults(data.results.map((doc: any) => doc.name) || []);
+      setResults(data.result.map((doc: any) => doc.name) || []);
     } catch (error) {
       console.error("Search failed", error);
     }

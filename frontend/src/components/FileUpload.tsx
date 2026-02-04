@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const FileUpload = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -12,7 +13,7 @@ const FileUpload = () => {
 
     try {
       setStatus('Uploading...');
-      const response = await fetch('http://localhost:3000/api/ingest', {
+      const response = await fetch(`${apiUrl}/api/ingest`, {
         method: 'POST',
         body: formData,
       });
@@ -20,7 +21,8 @@ const FileUpload = () => {
       if (response.status === 202) {
         setStatus('Ingestion started successfully! (Asynchronous)'); 
       } else {
-        setStatus('Upload failed.');
+        const data = await response.json();
+        setStatus(data.message || 'Upload failed.');
       }
     } catch (error) {
       setStatus('Error connecting to server.');
